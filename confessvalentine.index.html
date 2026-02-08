@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#ffe6f0;
+    --pink:#ff8fa3;
+    --text:#9b1d3b;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:var(--bg);
+    overflow:hidden;
+    color:var(--text);
+}
+
+.serif{font-family:'Playfair Display',serif}
+
+/* clear glass */
+.glass{
+    background:rgba(255,255,255,.35);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,192,217,.4);
+    box-shadow:0 20px 40px rgba(255,143,163,.18);
+}
+
+/* floating bg */
+.floating{animation:float ease-in-out infinite}
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-25px)}
+}
+
+/* button */
+.btn-hover{
+    transition:.4s cubic-bezier(.175,.885,.32,1.275)
+}
+.btn-hover:hover{
+    transform:scale(1.08) translateY(-4px);
+    box-shadow:0 18px 35px rgba(255,143,163,.5)
+}
+
+/* YAY */
+#yay{
+    position:fixed;
+    top:8%;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:3.2rem;
+    color:#ff4d6d;
+    text-shadow:0 0 25px #ffb3c1;
+    display:none;
+    animation:yay 1s ease-in-out 3;
+    z-index:50;
+}
+@keyframes yay{
+    0%{transform:translateX(-50%) scale(.5);opacity:0}
+    50%{transform:translateX(-50%) scale(1.2);opacity:1}
+    100%{transform:translateX(-50%) scale(1)}
+}
+</style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center">
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div id="bg" class="fixed inset-0 pointer-events-none"></div>
+
+<!-- PAGE 1 -->
+<div id="page1" class="z-10 text-center px-4 transition-all duration-700">
+    <h1 class="serif text-6xl md:text-8xl text-pink-500 mb-10">
+        Would you like to be <br>
+        <span class="italic text-pink-600">my Valentine?</span>
+    </h1>
+
+    <div class="flex flex-col md:flex-row gap-8 justify-center">
+        <button onclick="yes()" class="btn-hover px-14 py-6 bg-pink-500 text-white rounded-full text-3xl font-bold">
+            YES 💖
+        </button>
+        <button onclick="no()" class="text-pink-400 hover:text-pink-600 text-xl">
+            No
+        </button>
+    </div>
+</div>
+
+<!-- YAY -->
+<div id="yay">YAYYYYY 💖✨</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="hidden fixed inset-0 z-20 flex items-center justify-center p-4">
+    <div class="glass w-full max-w-3xl p-10 md:p-14 rounded-[2.5rem] max-h-[85vh] overflow-y-auto text-center">
+        <div id="msg" class="text-[1rem] md:text-[1.2rem] leading-[1.9] text-pink-800 whitespace-pre-line font-medium"></div>
+        <div id="hint" class="mt-6 text-pink-400 animate-pulse hidden">✨ ❤️ ✨</div>
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="hidden fixed inset-0 z-20 flex items-center justify-center">
+    <h2 class="serif text-5xl text-pink-400 animate-bounce">
+        OKKK, my bad 🫶 I still love you.
+    </h2>
+</div>
+
+<script>
+/* background decor */
+const bg=document.getElementById('bg');
+['💖','🌸','✨','🎀','💗'].forEach(()=>{});
+for(let i=0;i<30;i++){
+    let d=document.createElement('div');
+    d.innerHTML=['💖','🌸','✨','🎀','💗'][Math.floor(Math.random()*5)];
+    d.className='absolute floating opacity-30';
+    d.style.left=Math.random()*100+'%';
+    d.style.top=Math.random()*100+'%';
+    d.style.fontSize=22+Math.random()*28+'px';
+    d.style.animationDuration=4+Math.random()*6+'s';
+    bg.appendChild(d);
+}
+
+/* YES */
+function yes(){
+    page1.classList.add('hidden');
+    page2.classList.remove('hidden');
+    yay.style.display='block';
+
+    const music=document.getElementById('bgMusic');
+    music.volume=0.4;
+    music.play();
+
+    confettiLoop();
+    type();
+}
+
+/* NO */
+function no(){
+    page1.classList.add('hidden');
+    page3.classList.remove('hidden');
+}
+
+/* confetti */
+function confettiLoop(){
+    const end=Date.now()+6000;
+    (function f(){
+        confetti({particleCount:12,spread:150,origin:{x:Math.random(),y:0.2}});
+        if(Date.now()<end) requestAnimationFrame(f);
+    })();
+}
+
+/* typing message */
+function type(){
+const text=`okay so um i’ve actually liked you for like 5 whole months since october and it’s kinda crazy because i first saw you in music class and then you literally never left my mind at all. and then i got closer to you because of thaw tar htun hehe and funny thing is that 1v1 you played with thaw tar, that was actually me on his account. i overthought everything for months like actually losing my mind for real but the moment you said yes i swear everything was worth it and i just went ahhhhhhdjsjs 😭💞 this really means so so much to me and i’m genuinely so happy right now like smiling at my phone kicking my feet and feeling all warm and dumb in a good way yayikeeee 🥹💗`;
+
+let i=0;
+const m=document.getElementById('msg');
+(function t(){
+    if(i<text.length){
+        m.innerHTML+=text.charAt(i++);
+        setTimeout(t,28);
+    }else{
+        hint.classList.remove('hidden');
+    }
+})();
+}
+</script>
+
+</body>
+</html>
